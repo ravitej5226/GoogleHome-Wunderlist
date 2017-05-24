@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 3000;        // set our port
 
 var list=require('./app/models/list');
-
+  list=new list();
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
@@ -30,7 +30,7 @@ router.use(function (req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
+    res.json({ message: 'Welcome to our API!' });
 });
 
 // more routes for our API will happen here
@@ -41,13 +41,11 @@ app.use('/api', router);
 
 router.route('/list/:item')
     .get(function (req, res) {
-        list=new list(req.params.item);
-        //list.name=req.body.name
-        res.json({message:list.GetAllLists()});
+        res.json({message:list.AddItemToList(req.params.item)});
     
     });
 
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('App running on port: ' + port);
