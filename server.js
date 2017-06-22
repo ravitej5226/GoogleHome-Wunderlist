@@ -30,7 +30,7 @@ router.use(function (req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function (req, res) {
-    res.json({ message: 'Welcome to our API!' });
+    res.json({ message: 'The site is working!' });
 });
 
 // more routes for our API will happen here
@@ -41,8 +41,9 @@ app.use('/api', router);
 
 router.route('/list/:item')
     .get(function (req, res) {
-        res.json({message:list.AddItemToList(req.params.item)});
-    
+        list.AddItemToList(req.params.item,function(response){
+            res.json({message:response});
+        })
     });
 
 // START THE SERVER
