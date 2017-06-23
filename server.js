@@ -7,6 +7,7 @@
 var express = require('express');        // call express
 var app = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var ngrok=require('ngrok');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -48,5 +49,13 @@ router.route('/list/:item')
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
+app.listen(port, function () {
+  ngrok.connect(port, function (err, url) {
+    console.log('POST "text=Hello Google Home" to:');
+    console.log('    http://localhost:' + port + '/google-home-notifier');
+    console.log('    ' +url + '/google-home-notifier');
+    console.log('example:');
+    console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
+  });
+})
 console.log('App running on port: ' + port);

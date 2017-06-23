@@ -1,7 +1,13 @@
 var Enumerable = require('linq');
 var WunderlistSDK = require('wunderlist');
+var googlehome = require('google-home-notifier');
+
 var wunderlistAPI;
-var listId=307524936;
+var listId=143507542;
+
+var deviceName = 'Google-Home-9cd89fed89119ebf8d3195745a5da8f2';
+googlehome.device(deviceName);
+
 function list() {
 
 
@@ -12,7 +18,7 @@ function list() {
 }
 
 list.prototype.AddItemToList = function (item,callback) {
- 
+ //307524936
 //143507542
 
 // Check if item is already available
@@ -24,7 +30,12 @@ if(isTaskPresent)
 {
   // If yes, push notification saying the same
   // TODO: push notification
-  callback('Item already present');
+  text=item+' already present'
+    googlehome.notify(text, function(res) {
+      console.log(res);
+    });
+  callback(text);
+  
   return;
 }
 else{
@@ -34,7 +45,11 @@ CreateTask(item,callback);
 }
 })
 .fail(function(response,statusCode){
-
+  text='There was an error adding '+item+'  to groceries'
+      googlehome.notify(text, function(res) {
+      console.log(response);
+    });
+    callback(text);
 })
 
 
@@ -50,10 +65,19 @@ var CreateTask=function(item,callback)
     "title": item
   }).done(function (res) {
     // TODO: push notification
-    callback('Success');
+    text=item+' added to groceries'
+      googlehome.notify(text, function(res) {
+      console.log(res);
+    });
+    callback(text);
     return "success"
   }).fail(function (err) {
       // TODO: push notification
+       text='There was an error adding '+item+'  to groceries'
+      googlehome.notify(text, function(res) {
+      console.log(err);
+    });
+    callback(text);
     return "Fail"
   })
 
